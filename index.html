@@ -7,8 +7,15 @@
     <title>Encontre um Buffet</title>
 </head>
 <body>
-    <div app="app">
+    <div id="app">
+        <h1>Buffets</h1>
 
+        <ul>
+            <li v-for="item in buffets">
+                {{item.brandName}}<br>
+                {{item.state}} - {{item.city}}<br>
+            </li>
+        </ul>
     </div>
     
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
