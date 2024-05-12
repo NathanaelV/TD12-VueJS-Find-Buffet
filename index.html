@@ -10,12 +10,55 @@
     <div id="app">
         <h1>Buffets</h1>
 
+        <button v-if="buffets.length <= 0" v-on:click="getBuffets">Voltar</button>
+
         <ul>
             <li v-for="item in buffets">
-                {{item.brandName}}<br>
-                {{item.state}} - {{item.city}}<br>
+                <button v-on:click="buffetDetails(item.id)">
+                    {{item.brandName}}<br>
+                    {{item.state}} - {{item.city}}<br>
+                </button>
             </li>
         </ul>
+
+        <div v-if="buffets.length <= 0">
+            <dl>
+                <div>
+                    <dt>Nome:</dt>
+                    <dd>{{buffet.brandName}}</dd>
+                </div>
+
+                <div>
+                    <dt>Telefone:</dt>
+                    <dd>{{buffet.phone}}</dd>
+                </div>
+
+                <div>
+                    <dt>E-mail:</dt>
+                    <dd>{{buffet.email}}</dd>
+                </div>
+
+                <div>
+                    <dt>Endereço:</dt>
+                    <dd>{{buffet.address}} - {{buffet.zipCode}}</dd>
+                </div>
+
+                <div>
+                    <dt>Cidade:</dt>
+                    <dd>{{buffet.city}} - {{buffet.state}}</dd>
+                </div>
+
+                <div>
+                    <dt>Descrição:</dt>
+                    <dd>{{buffet.description}}</dd>
+                </div>
+
+                <div>
+                    <dt>Formas de pagamento:</dt>
+                    <dd>{{buffet.payment}}</dd>
+                </div>
+            </dl>
+        </div>
     </div>
     
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
