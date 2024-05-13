@@ -4,18 +4,30 @@ const app = Vue.createApp ({
             buffets: [],
             buffet: {},
             buffet_events: [],
-            // buffet_event: {}
+            searchText: ''
         }
     },
 
-    // conputed: {
-    //     listResult() {
-    //         return this.buffet;
-    //     }
-    // },
+    computed: {
+        listResult() {
 
-    mounted() {
-        this.getBuffets();
+            if (this.searchText) {
+
+                return this.buffets.filter(buffet => {
+
+                    return buffet.brandName.toLowerCase().includes(this.searchText.toLowerCase());
+
+                });
+            } else {
+
+                return this.buffets;
+
+            }
+        }
+    },
+
+    async mounted() {
+        this.listResult = await this.getBuffets();
     },
 
     methods: {
@@ -36,6 +48,7 @@ const app = Vue.createApp ({
 
                 this.buffets.push(buffet);
             });
+
         },
 
         async buffetDetails(buffetId) {

@@ -10,14 +10,17 @@
     <div id="app">
         <h1>Buffets</h1>
 
-        <p v-if="!buffets && buffet">
+        <input type="text" v-model="searchText" placeholder="Nome do Buffet">
+
+        <br>
+        <p v-if="buffets.length <= 0 && !buffet.id">
             Nenhum Buffet encontrado.
         </p>
 
         <button v-if="buffet.id && buffets.length <= 0" v-on:click="getBuffets">Voltar</button>
 
         <ul>
-            <li v-for="item in buffets">
+            <li v-for="item in listResult">
                 <button v-on:click="buffetDetails(item.id)">
                     {{item.brandName}}<br>
                     {{item.state}} - {{item.city}}<br>
