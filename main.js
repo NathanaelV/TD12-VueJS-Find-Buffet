@@ -4,7 +4,10 @@ const app = Vue.createApp ({
             buffets: [],
             buffet: {},
             buffet_events: [],
-            searchText: ''
+            searchText: '',
+            event: {},
+            showBuffetDetails: false,
+            showEventDetails: false,
         }
     },
 
@@ -49,9 +52,10 @@ const app = Vue.createApp ({
                 this.buffets.push(buffet);
             });
 
+            this.everyThingFalse();
         },
 
-        async buffetDetails(buffetId) {
+        async getbuffetDetails(buffetId) {
             let response = await fetch('http://localhost:3000/api/v1/buffets/' + buffetId);
 
             let data = await response.json();
@@ -72,6 +76,9 @@ const app = Vue.createApp ({
             this.buffet.payment = data.payment;
 
             this.getEvents(buffetId);
+
+            this.everyThingFalse();
+            this.showBuffetDetails = true;
         },
 
         async getEvents(buffetId) {
@@ -84,11 +91,27 @@ const app = Vue.createApp ({
             data.forEach(element => {
                 buffet_event = {};
 
+                buffet_event.id = element.id;
                 buffet_event.name = element.name;
                 buffet_event.description = element.description;
 
                 this.buffet_events.push(buffet_event)
             })
+        },
+
+        async getEventDetails(buffetId, eventId) {
+            
+            let response = await fetch(`http://localhost:3000/api/v1/buffets/${buffetId}/events/${eventId}`);
+            
+            this.event = await response.json();
+
+            this.everyThingFalse();
+            this.showEventDetails = true;
+        },
+
+        everyThingFalse() {
+            this.showBuffetDetails = false;
+            this.showEventDetails = false;
         }
     }
 })

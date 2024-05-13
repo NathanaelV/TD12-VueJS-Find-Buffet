@@ -8,27 +8,26 @@
 </head>
 <body>
     <div id="app">
-        <h1>Buffets</h1>
+        <h1 v-on:click="getBuffets">Buffets</h1>
 
         <input type="text" v-model="searchText" placeholder="Nome do Buffet">
 
-        <br>
         <p v-if="buffets.length <= 0 && !buffet.id">
             Nenhum Buffet encontrado.
         </p>
 
-        <button v-if="buffet.id && buffets.length <= 0" v-on:click="getBuffets">Voltar</button>
-
         <ul>
             <li v-for="item in listResult">
-                <button v-on:click="buffetDetails(item.id)">
+                <button v-on:click="getbuffetDetails(item.id)">
                     {{item.brandName}}<br>
                     {{item.state}} - {{item.city}}<br>
                 </button>
             </li>
         </ul>
 
-        <div v-if="buffet.id && buffets.length <= 0">
+        <div class="buffet-details" v-if="showBuffetDetails">
+            <button v-on:click="getBuffets">Menu</button>
+
             <dl>
                 <div>
                     <dt>Nome:</dt>
@@ -66,25 +65,74 @@
                 </div>
             </dl>
 
-            <h2>Eventos</h2>
+            <div>
+                <h2>Eventos</h2>
 
-            <p v-if="buffet_events.length <= 0">
-                Sem eventos cadastrados
-            </p>
+                <p v-if="buffet_events.length <= 0">
+                    Sem eventos cadastrados
+                </p>
 
-            <ul>
+                <ul>
+                    <div>
+                        <li v-for="item in buffet_events">
+                            <dl class="event" v-on:click="getEventDetails(buffet.id, item.id)">
+                                <dt>Evento:</dt>
+                                <dd>{{item.name}}</dd>
+
+                                <dt>Descrição:</dt>
+                                <dd>{{item.description}}</dd>
+                            </dl>
+                        </li>
+                    </div>
+                </ul>
+            </div>
+        </div>
+
+        <div class="event-details" v-if="showEventDetails">
+            <button v-on:click="getBuffets">Menu</button>
+            <button v-on:click="getbuffetDetails(buffet.id)">Voltar para Buffet {{buffet.brandName}}</button>
+
+            <dl>
+                {{event.name}}
                 <div>
-                    <li v-for="item in buffet_events">
-                        <dl>
-                            <dt>Evento:</dt>
-                            <dd>{{item.name}}</dd>
-
-                            <dt>Descrição:</dt>
-                            <dd>{{item.description}}</dd>
-                        </dl>
-                    </li>
+                    <dt>Descrição:</dt>
+                    <dd>{{event.description}}</dd>
                 </div>
-            </ul>
+                
+                <div>
+                    <dt>Mínimo de pessoas:</dt>
+                    <dd>{{event.min_people}}</dd>
+                </div>
+                
+                <div>
+                    <dt>Máximo de pessoas:</dt>
+                    <dd>{{event.max_people}}</dd>
+                </div>
+                
+                <div>
+                    <dt>Duração do evento:</dt>
+                    <dd>{{event.duration}}</dd>
+                </div>
+                
+                <div>
+                    <dt>Cardápio:</dt>
+                    <dd>{{event.menu}}</dd>
+                </div>
+                
+                <div>
+                    <dt>Cardápio:</dt>
+                    <dd>{{event.menu}}</dd>
+                </div>
+
+                <h3>Serviços</h3>
+                <ul>
+                    <li v-if="event.alcoholic_beverages">Bebida alcóolica</li>
+                    <li v-if="event.decoration">Decoração</li>
+                    <li v-if="event.parking">Estacionamento</li>
+                    <li v-if="event.parking_valet">Valet estacionamento</li>
+                    <li v-if="event.customer_space">Evento em residência</li>
+                </ul>
+            </dl>
         </div>
     </div>
 
