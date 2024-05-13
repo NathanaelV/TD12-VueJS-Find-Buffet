@@ -10,7 +10,11 @@
     <div id="app">
         <h1>Buffets</h1>
 
-        <button v-if="buffets.length <= 0" v-on:click="getBuffets">Voltar</button>
+        <p v-if="!buffets && buffet">
+            Nenhum Buffet encontrado.
+        </p>
+
+        <button v-if="buffet.id && buffets.length <= 0" v-on:click="getBuffets">Voltar</button>
 
         <ul>
             <li v-for="item in buffets">
@@ -21,7 +25,7 @@
             </li>
         </ul>
 
-        <div v-if="buffets.length <= 0">
+        <div v-if="buffet.id && buffets.length <= 0">
             <dl>
                 <div>
                     <dt>Nome:</dt>
@@ -58,9 +62,29 @@
                     <dd>{{buffet.payment}}</dd>
                 </div>
             </dl>
+
+            <h2>Eventos</h2>
+
+            <p v-if="buffet_events.length <= 0">
+                Sem eventos cadastrados
+            </p>
+
+            <ul>
+                <div>
+                    <li v-for="item in buffet_events">
+                        <dl>
+                            <dt>Evento:</dt>
+                            <dd>{{item.name}}</dd>
+
+                            <dt>Descrição:</dt>
+                            <dd>{{item.description}}</dd>
+                        </dl>
+                    </li>
+                </div>
+            </ul>
         </div>
     </div>
-    
+
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="main.js"></script>
 </body>

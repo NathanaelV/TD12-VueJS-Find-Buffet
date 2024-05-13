@@ -2,7 +2,9 @@ const app = Vue.createApp ({
     data() {
         return {
             buffets: [],
-            buffet: {}
+            buffet: {},
+            buffet_events: [],
+            // buffet_event: {}
         }
     },
 
@@ -55,6 +57,25 @@ const app = Vue.createApp ({
             this.buffet.zipCode = data.zip_code;
             this.buffet.description = data.description;
             this.buffet.payment = data.payment;
+
+            this.getEvents(buffetId);
+        },
+
+        async getEvents(buffetId) {
+            let response = await fetch(`http://localhost:3000/api/v1/buffets/${buffetId}/events`);
+
+            let data = await response.json();
+
+            this.buffet_events = [];
+
+            data.forEach(element => {
+                buffet_event = {};
+
+                buffet_event.name = element.name;
+                buffet_event.description = element.description;
+
+                this.buffet_events.push(buffet_event)
+            })
         }
     }
 })
