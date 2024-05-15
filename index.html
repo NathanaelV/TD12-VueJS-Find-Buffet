@@ -118,11 +118,6 @@
                     <dt>Cardápio:</dt>
                     <dd>{{event.menu}}</dd>
                 </div>
-                
-                <div>
-                    <dt>Cardápio:</dt>
-                    <dd>{{event.menu}}</dd>
-                </div>
 
                 <h3>Serviços</h3>
                 <ul>
@@ -133,6 +128,17 @@
                     <li v-if="event.customer_space">Evento em residência</li>
                 </ul>
             </dl>
+
+            <h3>Enviar proposta</h3>
+            <form @submit.prevent="submitProposal(buffet.id, event.id)">
+                <label for="eventDate">Data do evento: </label>
+                <input type="date" id="eventDate" v-model="order.event_date"> <br>
+                <label for="people">Número de pessoas: </label>
+                <input type="number" id="number" v-model="order.people"> <br>
+                <button type="submit">Enviar proposta</button>
+            </form>
+
+            <p v-if="response.advance_price">Valor prévio do evento: {{response.advance_price}}</p>
         </div>
     </div>
 

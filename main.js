@@ -8,6 +8,11 @@ const app = Vue.createApp ({
             event: {},
             showBuffetDetails: false,
             showEventDetails: false,
+            order: {
+                event_date: '',
+                people: 0
+            },
+            response: {}
         }
     },
 
@@ -100,7 +105,6 @@ const app = Vue.createApp ({
         },
 
         async getEventDetails(buffetId, eventId) {
-            
             let response = await fetch(`http://localhost:3000/api/v1/buffets/${buffetId}/events/${eventId}`);
             
             this.event = await response.json();
@@ -112,7 +116,37 @@ const app = Vue.createApp ({
         everyThingFalse() {
             this.showBuffetDetails = false;
             this.showEventDetails = false;
-        }
+        },
+
+        async submitProposal(buffetId, eventId) {
+            var today = new Date();
+            var formDate = new Date(this.order.event_date + 'GMT-0300');
+
+            if (formDate < today || formDate == 'Invalid Date') {
+                alert('Selecionar uma data Válida ou Futura.')
+                return
+            }
+
+            if (this.order.people < 1) {
+                alert('Número de pessoas precisa ser maior que Zero.')
+                return
+            }
+
+            await fetch(
+                `http://localhost:3000/api/v1/buffets/${buffetId}/events/${eventId}/orders`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify(this.order)
+                },
+            ).then(response => response.json())
+            .then(data => {
+                this.response = data
+            })
+            .catch(error => console.error('Erro: ', error));
+        },
     }
 })
 
